@@ -1,0 +1,84 @@
+body {
+  margin: 0;
+  font-family: 'Titillium Web', sans-serif;
+  background-color: #333333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #eeeeee;
+}
+
+.login-container {
+  position: relative; /* Чтобы кнопки можно было позиционировать внутри */
+  background-color: #1f1f1f;
+  padding: 40px 50px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 0 10px 5px rgba(240, 112, 90, 0.3);
+  border: 1px solid rgba(94, 44, 35, 0.1);
+  text-align: center;
+  width: 350px;
+  height: 350px;
+}
+
+h1 {
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #F0705A;
+  text-align: left;
+  margin-left: 20px;
+}
+
+form {
+  margin-top: 20px;
+}
+
+form input {
+  width: 80%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  background-color: #E0E0E0;
+  color: #2A2A2A;
+  font-size: 14px;
+}
+
+form input::placeholder {
+  color: #2a2a2a;
+  font-size: 14px;
+}
+
+.button-group {
+  margin-top: 40px; /* немного опускаем блок кнопок */
+}
+
+.send-button {
+  margin-top: 30px;  /* опускаем кнопку "Отправить" */
+}
+
+.back-button {
+  margin-top: 20px;  /* ещё ниже кнопку "Назад" */
+}
+
+button {
+  width: 55%;
+  padding: 12px;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.send-button,
+.back-button {
+  background-color: #F0705A;
+  color: #ffffff;
+}
+
+.send-button:hover,
+.back-button:hover {
+  opacity: 0.85;
+}

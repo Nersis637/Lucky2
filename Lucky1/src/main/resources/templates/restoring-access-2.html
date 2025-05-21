@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Восстановление пароля</title>
+  <link rel="stylesheet" href="restoring-access.css">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="login-container">
+  <h1>Введите код</h1>
+  <div class="form-wrapper">
+    <form action="/verify-reset-code" method="post">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="code" placeholder="Введите код" required>
+      <div class="button-group">
+        <button type="submit" class="send-button">Подтвердить</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

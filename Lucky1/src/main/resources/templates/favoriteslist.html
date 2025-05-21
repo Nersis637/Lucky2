@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Избранные матчи</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/matches.css">
+</head>
+<body>
+
+<div class="header">
+    <button onclick="location.href='/home'">Главная</button>
+    <h1>Избранные матчи</h1>
+    <button onclick="location.href='/matches'">Матчи</button>
+</div>
+
+<div class="match-list">
+    <th:block th:each="match : ${favorites}">
+        <div class="match-entry">
+
+            <!-- 1) Время / Завершён + полная дата -->
+            <div class="match-status-line">
+          <span th:if="${T(java.time.LocalDateTime).now().isAfter(match.matchDate.plusHours(3))}"
+                class="finished">
+            Завершён
+          </span>
+                <span th:unless="${T(java.time.LocalDateTime).now().isAfter(match.matchDate.plusHours(3))}"
+                      th:text="${#temporals.format(match.matchDate, 'dd.MM.yyyy HH:mm')}">
+            01.01.2025 19:15
+          </span>
+            </div>
+
+            <div class="match-content">
+                <div class="team-left">
+                    <span class="team-name" th:text="${match.teamHome}">Команда A</span>
+                    <img class="team-logo" th:src="@{${match.homeLogoUrl}}" alt="Лого">
+                </div>
+
+                <div class="score"
+                     th:text="${match.homeScore} + ' : ' + ${match.awayScore}">
+                    0 : 0
+                </div>
+
+                <div class="team-right">
+                    <img class="team-logo" th:src="@{${match.awayLogoUrl}}" alt="Лого">
+                    <span class="team-name" th:text="${match.teamAway}">Команда B</span>
+                </div>
+
+                <div class="bookmark"
+                     th:attr="onclick='toggleFavorite(' + ${match.id} + ')'"
+                     title="Убрать из избранного">★</div>
+            </div>
+        </div>
+    </th:block>
+</div>
+
+<script>
+    async function toggleFavorite(matchId) {
+      const res = await fetch('/session/userId');
+      const { userId } = await res.json();
+      if (!userId) {
+        return alert('Войдите, чтобы управлять избранным.');
+      }
+      const response = await fetch(`/favorites/${matchId}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        document.querySelector(`.bookmark[onclick*="(${matchId})"]`)
+                .closest('.match-entry').remove();
+      } else {
+        alert('Ошибка при удалении из избранного');
+      }
+    }
+  </script>
+</body>
+</html>

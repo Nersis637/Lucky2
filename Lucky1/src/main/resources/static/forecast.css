@@ -1,0 +1,397 @@
+:root {
+  --bg-page: #333;
+  --block-bg: #1f1f1f;
+  --border: #444;
+  --accent: #F0705A;
+  --text-main: #eee;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Titillium Web', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+/* Хедер */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--block-bg);
+  padding: 1rem 2rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  color: var(--text-main);
+  text-align: center;
+  flex: 1;
+}
+
+.header button {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.header button:hover {
+  background-color: #ff8b71;
+}
+
+.forecast-result {
+  width: 1300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  background-color: var(--block-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 0 6px 2px rgba(240, 112, 90, 0.3);
+  padding: 40px 60px;
+  margin: 40px auto;
+}
+
+.team-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.team-column h2 {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.team-column p {
+  color: var(--text-main);
+  font-size: 24px;     /* Было 1rem */
+  font-weight: bold;   /* Добавлено */
+}
+
+.draw-column {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-main);
+  min-width: 120px;
+  text-align: center;
+  margin-top: 110px
+}
+
+.team-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 60px;
+  font-size: 18px;
+}
+
+.team-info h2 {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.team-info p {
+  color: var(--text-main);
+}
+
+.logo-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-top: 10px;
+}
+
+.team-logo {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.team-logo:hover {
+  transform: scale(1.05);
+}
+
+.draw-center {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+.forecast-chart-block {
+  width: 400px;
+  margin: 40px 0 0 155px;
+  background-color: var(--block-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              0 0 6px 2px rgba(240, 112, 90, 0.3);
+  text-align: center;
+}
+
+.forecast-chart-block h2 {
+  margin-bottom: 20px;
+  color: var(--accent);
+  font-size: 1.4rem;
+}
+
+.comparison-block {
+  width: 800px;
+  margin-left: 625px;
+  margin-top: -400px;
+  background-color: var(--block-bg);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              0 0 6px 2px rgba(240, 112, 90, 0.3);
+}
+
+.comparison-block h2 {
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.details-block {
+  width: 800px;
+  margin-left: 1500px;
+  margin-top: -475px;
+  background-color: var(--block-bg);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              0 0 6px 2px rgba(240, 112, 90, 0.3);
+}
+
+.details-block h2 {
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.attacks-block {
+  background-color: var(--block-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 0 6px 2px rgba(240, 112, 90, 0.3);
+  padding: 20px;
+  margin: 40px 0 0 150px;
+  width: 800px;
+  text-align: center;
+}
+
+.attacks-block h2 {
+  color: #F0705A;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.attacks-block canvas {
+  max-width: 100%;
+  height: 400px !important;
+}
+
+.analysis-block {
+  width: 1500px;
+  height: 190px;
+  margin: -483px 0 0 1000px;
+  background-color: var(--block-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              0 0 6px 2px rgba(240, 112, 90, 0.3);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.team-form-text {
+  flex: 1;
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.team-form-text h2 {
+  color: #F0705A;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.metric-info {
+  background-color: var(--block-bg);
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 40px;
+  margin-left: 1000px;
+  width: 1500px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              0 0 6px 2px rgba(240, 112, 90, 0.3);
+  color: var(--text-main);
+}
+
+.metric-info h2 {
+  color: var(--accent);
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.metric-description {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+}
+
+.metric-card {
+  flex: 1;
+  background-color: #2b2b2b;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.metric-card h3 {
+  color: var(--accent);
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.metric-card p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/*.bottom-buttons-fixed {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  display: flex;
+  gap: 15px;
+  z-index: 999;
+}
+
+.bottom-buttons-fixed button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: inherit;
+}
+
+.bottom-buttons-fixed button:hover {
+  background-color: #ff8b71;
+}*/
+.button-group-top-left {
+  position: absolute;
+  top: 180px;        /* точно под кнопкой "Назад" */
+  left: 240px;       /* строго по выделенному прямоугольнику */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 10;
+}
+
+.button-group-top-left button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 15px 27px; /* Было 10px 18px — увеличили в 2 раза */
+  border-radius: 12px;
+  font-size: 21px;     /* Было 14px — увеличили в 2 раза */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: inherit;
+}
+
+.button-group-top-left button:hover {
+  background-color: #ff8b71;
+}
+.floating-chat {
+  position: absolute;
+  top: 110px;
+  right: 40px;
+  width: 450px;
+  height: 790px;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+                0 0 6px 2px rgba(240, 112, 90, 0.3);
+}
+
+.floating-chat h2 {
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+#chat-box {
+  height: 665px;
+  overflow-y: auto;
+  background: #2a2a2a;
+  padding: 10px;
+  border: 1px solid #444;
+  margin-bottom: 10px;
+  color: #eee;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.chat-message {
+  margin-bottom: 6px;
+}
+
+#chat-form {
+  display: flex;
+  gap: 6px;
+}
+
+#chat-form input[type="text"] {
+  width: 260px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14px;
+}
+
+#chat-form button {
+  padding: 6px 12px;
+  background-color: #F0705A;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.draw-icon {
+  font-size: 40px;
+  color: #eee;
+  line-height: 1;
+  position: relative;
+  top: -60px; /* поднимает только ":" */
+}

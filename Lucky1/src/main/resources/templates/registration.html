@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Titillium Web', sans-serif;
+            background-color: #333333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #eeeeee;
+        }
+
+        .login-container {
+            background-color: #1f1f1f;
+            padding: 40px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0px 0 10px 5px rgba(240, 112, 90, 0.3);
+            border: 1px solid rgba(94, 44, 35, 0.1);
+            text-align: center;
+            width: 350px;
+            height: auto;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #F0705A;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        form input {
+            width: 80%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            background-color: #E0E0E0;
+            color: #2A2A2A;
+            font-size: 14px;
+        }
+
+        form input::placeholder {
+            color: #2a2a2a;
+            font-size: 14px;
+        }
+
+        form input:focus {
+            outline: none;
+        }
+
+        .next-button {
+            width: 80%;
+            padding: 12px 15px;
+            margin: 20px 0;
+            background-color: #F0705A;
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .next-button:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>Регистрация</h1>
+    <form id="registrationForm">
+        <input type="text" id="login" name="login" placeholder="Введите Ваш логин" required>
+        <input type="email" id="email" name="email" placeholder="Введите Ваш email" required>
+        <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+        <button type="submit" class="next-button" id="registrationBtn">Продолжить</button>
+    </form>
+    <p id="error-message" style="color:red;"></p>
+</div>
+
+<script>
+    const registrationForm = document.getElementById('registrationForm');
+
+    registrationForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const login = document.getElementById('login').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ login, email, password })
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Регистрация успешна!');
+                    location.href = 'authorization';
+                } else {
+                    alert('Ошибка регистрации. Попробуйте еще раз.');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+    });
+</script>
+</body>
+</html>

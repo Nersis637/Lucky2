@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Прогнозирование матча</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/select.css">
+</head>
+<body>
+<div class="header">
+  <button onclick="location.href='/home'">Назад</button>
+  <h1 class="centered-title">Прогнозирование матча</h1>
+  <div></div>
+</div>
+
+<div class="forecast-form">
+  <div class="select-row">
+    <div class="select-block">
+      <label for="team1">Команда 1</label>
+      <select id="team1" name="team1" required></select>
+    </div>
+
+    <div class="select-block">
+      <label for="team2">Команда 2</label>
+      <select id="team2" name="team2" required></select>
+    </div>
+  </div>
+</div>
+
+<!-- Кнопка отправки формы -->
+<button id="submit-forecast" class="forecast-button">
+  Спрогнозировать
+</button>
+
+<script>
+  const team1Select = document.getElementById('team1');
+  const team2Select = document.getElementById('team2');
+  const submitBtn = document.getElementById('submit-forecast');
+
+  async function fetchTeams() {
+    try {
+      const response = await fetch('http://localhost:5000/api/teams');
+      const teams = await response.json();
+      teams.forEach(name => {
+        const opt1 = document.createElement('option');
+        const opt2 = document.createElement('option');
+        opt1.value = opt2.value = name;
+        opt1.text = opt2.text = name;
+        team1Select.appendChild(opt1);
+        team2Select.appendChild(opt2.cloneNode(true));
+      });
+    } catch (err) {
+      alert('Ошибка загрузки списка команд');
+    }
+  }
+
+submitBtn.addEventListener('click', async () => {
+  const team1 = team1Select.value;
+  const team2 = team2Select.value;
+
+  if (!team1 || !team2 || team1 === team2) {
+    alert("Выберите две разные команды");
+    return;
+  }
+
+  try {
+    // Запрос на Flask API, чтобы получить ID команд
+    const res = await fetch(`http://localhost:5000/api/team_ids?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}`);
+    const data = await res.json();
+
+    const team1Id = data.team1Id;
+    const team2Id = data.team2Id;
+
+    if (!team1Id || !team2Id) {
+      alert("Не удалось найти ID команд");
+      return;
+    }
+
+    // ⏩ Переход с ID и именами
+    const url = `/forecast/result?team1=${encodeURIComponent(team1)}&team2=${encodeURIComponent(team2)}&team1Id=${team1Id}&team2Id=${team2Id}`;
+    window.location.href = url;
+  } catch (err) {
+    console.error(err);
+    alert("Ошибка при получении ID команд");
+  }
+});
+
+  fetchTeams();
+</script>
+</body>
+</html>

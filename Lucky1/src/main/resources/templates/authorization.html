@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Titillium Web', sans-serif;
+            background-color: #333333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #eeeeee;
+        }
+
+        .login-container {
+            background-color: #1f1f1f;
+            padding: 40px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0px 0 10px 5px rgba(240, 112, 90, 0.3);
+            border: 1px solid rgba(94, 44, 35, 0.1);
+            text-align: center;
+            width: 350px;
+            height: auto;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            color: #F0705A;
+            text-align: left;
+            margin-left: 20px;
+        }
+
+        form input {
+            width: 80%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            background-color: #E0E0E0;
+            color: #2A2A2A;
+            font-size: 14px;
+        }
+
+        form input::placeholder {
+            color: #2a2a2a;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            display: block;
+            margin: 0px 0 20px 210px;
+            color: #5f9cff;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        button, a.register-button {
+            width: 55%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .login-button {
+            background-color: #F0705A;
+            color: #ffffff;
+        }
+
+        a.register-button {
+            background-color: #F0705A;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .login-button:hover, a.register-button:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h1>Войти</h1>
+    <form id="loginForm">
+        <input type="email" id="email" name="email" placeholder="Введите email" required>
+        <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+        <a href="/restoring-access" class="forgot-password">Забыл пароль?</a>
+        <button type="submit" class="login-button">Войти</button>
+        <a href="registration" class="register-button">Зарегистрироваться</a>
+    </form>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/authorization', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({ email, password })
+        })
+        .then(response => {
+            if (response.redirected) {
+                location.href = response.url;
+            } else {
+                alert('Ошибка. Проверьте email и пароль.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    });
+</script>
+</body>
+</html>

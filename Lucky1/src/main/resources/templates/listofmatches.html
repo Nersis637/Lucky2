@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список ближайших матчей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Shared -->
+  <link rel="stylesheet" href="/home.css">
+  <!-- Матчи -->
+  <link rel="stylesheet" href="/matches.css">
+</head>
+<body>
+
+<!-- Хедер -->
+<div class="header">
+  <button onclick="location.href='/home'">Главная</button>
+  <h1>Список ближайших матчей</h1>
+  <button onclick="location.href='/favorites'">Избранные</button>
+</div>
+
+<!-- Фильтры -->
+<div class="filters">
+  <button id="timeSortBtn">Время </button>
+  <input type="text" id="homeTeamFilter" placeholder="Поиск" />
+  <select id="leagueFilter">
+    <option value="">Все лиги</option>
+    <option value="FIFA World Cup">FIFA World Cup</option>
+    <option value="UEFA Champions League">UEFA Champions League</option>
+    <option value="Bundesliga">Bundesliga</option>
+    <option value="Eredivisie">Eredivisie</option>
+    <option value="Campeonato Brasileiro Série A">Campeonato Brasileiro Série A</option>
+    <option value="Primera Division">Primera Division</option>
+    <option value="Ligue 1">Ligue 1</option>
+    <option value="Championship">Championship</option>
+    <option value="Primeira Liga">Primeira Liga</option>
+    <option value="European Championship">European Championship</option>
+    <option value="Serie A">Serie A</option>
+    <option value="Premier League">Premier League</option>
+    <option value="Copa Libertadores">Copa Libertadores</option>
+  </select>
+</div>
+
+<!-- Список матчей -->
+<div class="match-list" id="match-list">
+  <p>Загрузка матчей...</p>
+</div>
+
+<script>
+  let sortDescending = false;
+
+  document.getElementById("timeSortBtn").addEventListener("click", () => {
+    sortDescending = !sortDescending;
+    document.getElementById("timeSortBtn").textContent = sortDescending ? "Время " : "Время ";
+    loadMatches();
+  });
+
+  document.getElementById("leagueFilter").addEventListener("change", loadMatches);
+  document.getElementById("homeTeamFilter").addEventListener("input", () => {
+    clearTimeout(window.typingTimer);
+    window.typingTimer = setTimeout(loadMatches, 300);
+  });
+
+  function loadMatches() {
+    const league = document.getElementById("leagueFilter").value;
+    const homeTeam = document.getElementById("homeTeamFilter").value;
+    const sort = sortDescending ? "DESC" : "ASC";
+
+    const url = new URL("/api/matches", window.location.origin);
+    url.searchParams.append("sort", sort);
+    if (league) url.searchParams.append("league", league);
+    if (homeTeam) url.searchParams.append("homeTeam", homeTeam);
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("match-list");
+        container.innerHTML = '';
+        if (data.length === 0) {
+          container.innerHTML = "<p>Матчи не найдены</p>";
+          return;
+        }
+        data.forEach(match => {
+          const div = document.createElement('div');
+          div.className = "match-entry";
+          div.innerHTML = `
+            <div class="match-status-line">
+              ${match.status === 'FINISHED' ? '<span class="finished">Завершён</span>' :
+                `<span>${new Date(match.matchDate).toLocaleDateString('ru-RU')}</span>&nbsp;
+                 <span>${new Date(match.matchDate).toLocaleTimeString('ru-RU', {hour: '2-digit', minute: '2-digit'})}</span>`}
+            </div>
+            <div class="match-content">
+              <div class="team-left">
+                <span class="team-name">${match.teamHome}</span>
+                <img class="team-logo" src="${match.homeLogoUrl}" alt="Home Logo">
+              </div>
+              <div class="score">${match.homeScore} : ${match.awayScore}</div>
+              <div class="team-right">
+                <img class="team-logo" src="${match.awayLogoUrl}" alt="Away Logo">
+                <span class="team-name">${match.teamAway}</span>
+              </div>
+              <div class="bookmark" onclick="toggleFavorite(${match.id})" title="Добавить/убрать из избранного">☆</div>
+            </div>`;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById("match-list").innerHTML = "<p>Ошибка загрузки матчей</p>";
+        console.error(err);
+      });
+  }
+
+  async function toggleFavorite(matchId) {
+    const resp = await fetch('/session/userId');
+    const {userId} = await resp.json();
+    if (!userId) {
+      return alert('Войдите, чтобы управлять избранным.');
+    }
+    const method = confirm('Добавить/убрать из избранного?') ? 'POST' : 'DELETE';
+    const res = await fetch(`/favorites/${matchId}`, {
+      method: method,
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({userId})
+    });
+    if (res.ok) {
+      alert('Успешно!');
+    } else {
+      alert('Ошибка при управлении избранным');
+    }
+  }
+
+  // Загрузка при открытии
+  loadMatches();
+</script>
+
+</body>
+</html>

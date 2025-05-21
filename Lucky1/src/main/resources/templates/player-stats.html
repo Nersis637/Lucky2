@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${player.fullName}">Игрок</title>
+  <link rel="stylesheet" href="/player-stats.css">
+</head>
+<body>
+
+<div class="block">
+  <div class="block-body player-main-info">
+
+    <!-- Левая колонка -->
+    <div class="player-left">
+      <img th:src="@{'/' + ${player.photoFilename}}"
+           th:alt="${player.fullName}"
+           class="player-photo"
+           onerror="this.src='/player-placeholder.png'">
+
+      <div class="player-info-under-photo">
+        <p><strong>Полное имя:</strong> <span th:text="${player.fullName}"></span></p>
+        <img th:src="${player.team.logoUrl}"
+             alt="Логотип клуба"
+             class="club-logo-under-name"
+             onerror="this.src='/team-placeholder.png'">
+        <p><strong>Клуб:</strong> <span th:text="${player.team.name}"></span></p>
+      </div>
+    </div>
+
+    <!-- Правая колонка -->
+    <div class="player-info-block">
+      <h2 th:text="${player.fullName}">Имя игрока</h2>
+      <p th:text="${player.bio}">Описание</p>
+      <p><strong>Номер в клубе:</strong> <span th:text="${player.clubNumber}"></span></p>
+      <p><strong>Сборная:</strong> <span th:text="${player.nationalTeam}"></span></p>
+      <p><strong>Номер в сборной:</strong> <span th:text="${player.nationalTeamNumber}"></span></p>
+      <p>
+        <strong>Дата рождения:</strong>
+        <span th:text="${#temporals.format(player.dateOfBirth, 'dd.MM.yyyy')}"></span>
+        <span th:text="' (' + ${player.age} + ' лет)'"></span>
+      </p>
+      <p><strong>Страна рождения:</strong> <span th:text="${player.nationality}"></span></p>
+      <p><strong>Город:</strong> <span th:text="${player.birthCity}"></span></p>
+      <p><strong>Позиция:</strong> <span th:text="${player.translatedPosition}"></span></p>
+      <p><strong>Рабочая нога:</strong> <span th:text="${player.foot}"></span></p>
+      <p><strong>Рост / вес:</strong>
+        <span th:text="${player.heightCm + ' см / ' + player.weightKg + ' кг'}"></span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="block matches-block">
+  <div class="block-header">Последние игры</div>
+  <div class="block-body">
+    <table class="stats-table">
+      <thead>
+      <tr>
+        <th>Дата</th>
+        <th>Домашняя</th>
+        <th>Гостевая</th>
+        <th>Счёт</th>
+        <th>Статус</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="match : ${lastMatches}">
+        <td th:text="${#temporals.format(match.matchDate, 'dd.MM.yyyy')}">01.01.2024</td>
+        <td th:text="${match.teamHome}">Team A</td>
+        <td th:text="${match.teamAway}">Team B</td>
+        <td th:text="${match.homeScore + ' : ' + match.awayScore}">1 : 2</td>
+        <td>Завершён</td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(lastMatches)}">
+        <td colspan="5" style="text-align: center;">Нет матчей</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="block stats-block">
+  <div class="block-header">Статистика</div>
+  <div class="block-body">
+    <table class="stats-table">
+      <thead>
+      <tr>
+        <th>Команда</th>
+        <th>Соревнования</th>
+        <th>Матчи</th>
+        <th>Голы</th>
+        <th>Пасы</th>
+        <th>Минуты</th>
+        <th>Жёлтые</th>
+        <th>Красные</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="stat : ${playerStatsList}">
+        <td th:text="${stat.teamName}">Bayer</td>
+        <td th:text="${stat.competitionName}">Турнир</td>
+        <td th:text="${stat.matches}">28</td>
+        <td th:text="${stat.goals}">5</td>
+        <td th:text="${stat.assists}">6</td>
+        <td th:text="${stat.minutes}">2190</td>
+        <td th:text="${stat.yellowCards}">2</td>
+        <td th:text="${stat.redCards}">0</td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(playerStatsList)}">
+        <td colspan="8" style="text-align: center;">Нет данных</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div style="display: flex; justify-content: flex-end; padding: 20px 40px;">
+  <button class="back-button" onclick="location.href='/search-page'">Назад</button>
+</div>
+
+</body>
+</html>

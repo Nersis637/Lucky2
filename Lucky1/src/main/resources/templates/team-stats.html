@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Статистика команды</title>
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/team-stats.css">
+  <link rel="stylesheet" href="../static/home.css">
+  <link rel="stylesheet" href="../static/team-stats.css">
+</head>
+<body>
+
+<!-- Главная сетка: левая и правая колонка -->
+<div class="main-grid">
+  <!-- Левая колонка -->
+  <div class="left-column">
+    <!-- Название -->
+    <div class="block">
+      <div class="block-header" th:text="${team.name}">Название</div>
+      <div class="block-body team-info">
+        <div class="team-info-header">
+          <img th:src="${team.logoUrl}" alt="Логотип" class="team-logo-big">
+          <div class="team-details">
+            <p><b>Полное название:</b> <span th:text="${team.name}">FC Fullname</span></p>
+            <p><b>Главный тренер:</b> <span th:text="${team.coach}">Имя</span></p>
+            <p><b>Стадион:</b> <span th:text="${team.venue}">Стадион</span></p>
+            <p><b>Год основания:</b> <span th:text="${team.founded}">1897</span></p>
+            <p>Рейтинг УЕФА: недоступен</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Обзор прессы -->
+    <div class="block">
+      <div class="block-header">Обзор прессы</div>
+      <div class="block-body">
+        <div class="press-entry" th:each="item : ${press}">
+          <div class="press-text" th:text="${item.text}">Текст новости...</div>
+          <div class="press-source" th:text="${item.source}">Источник</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Правая колонка -->
+  <div class="right-column">
+    <div class="block">
+      <div class="block-header">Серия А 2024/2025</div>
+      <div class="block-body ucl-container">
+        <div class="ucl-entry" th:each="row : ${standings}">
+          <div class="ucl-rank" th:text="${row.rank}">5</div>
+          <div class="ucl-team" th:text="${row.teamName}">Juventus</div>
+          <div class="ucl-points" th:text="${row.points}">28</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Статистика игроков -->
+<div class="block block-players">
+  <div class="block-header">Статистика игроков</div>
+  <div class="block-body">
+    <table class="player-table">
+      <thead>
+      <tr>
+        <th>Имя</th>
+        <th>Г</th>
+        <th>Мин</th>
+        <th>ЖК</th>
+        <th>КК</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="player : ${players}"
+          th:if="${player.firstName != null or player.lastName != null}">
+        <td>
+      <span th:text="${(player.firstName != null ? player.firstName : '') +
+                      (player.lastName != null ? ' ' + player.lastName : '')}">Имя</span><br>
+          <span class="player-role" th:text="${player.position}">позиция</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Кнопка Назад -->
+<div style="display: flex; justify-content: flex-end; padding: 20px 40px;">
+  <button onclick="location.href='/search-page'" class="back-button">Назад</button>
+</div>
+
+</body>
+</html>

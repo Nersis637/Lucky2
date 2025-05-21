@@ -1,0 +1,213 @@
+:root {
+  --bg-page: #333;
+  --block-bg: #1f1f1f;
+  --border: #444;
+  --accent: #F0705A;
+  --time-color: #ff4b4b;
+  --text-main: #eee;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+
+body {
+  font-family: 'Titillium Web', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-main);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--block-bg);
+  padding: 1rem 2rem;
+}
+
+.header h1 { font-size: 1.5rem; }
+
+.header button {
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.header button:hover { background-color: #ff8b71; }
+
+.match-list {
+  width: 90%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.match-entry {
+  position: relative;                       /* для абсолютного позиционирования детей */
+  background: var(--block-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 0;                          /* сверху-снизу */
+  min-height: 60px;
+}
+
+/* время сверху-слева */
+.match-status-line {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  color: var(--time-color);
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+/* жёстко фиксируем время */
+.match-status-line .finished {
+  color: #aaa;
+  text-transform: uppercase;
+}
+
+/* счёт по центру */
+.match-entry .score {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* левая команда: фиксированный отступ 200px */
+.match-entry .team-left {
+  position: absolute;
+  top: 50%;
+  left: 200px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* правая команда: 200px от правого края */
+.match-entry .team-right {
+  position: absolute;
+  top: 50%;
+  right: 200px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* логотипы круглые */
+.team-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+/* названия */
+.team-name {
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* звёздочка Избранного — справа */
+.bookmark {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ccc;
+  font-size: 1.2rem;
+}
+.bookmark:hover { color: #fff; }
+
+.match-status-line {
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Стили для полного отображения даты */
+.match-status-line .finished {
+  color: #aaa;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    width: 90%;
+    margin: 0 auto 25px auto;
+    margin-top: 40px;
+}
+
+#timeSortBtn {
+    background-color: #F0705A;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#timeSortBtn:hover {
+    background-color: #d85a46;
+}
+
+#homeTeamFilter {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    background-color: #1f1f1f;
+    color: #eee;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 20px;
+}
+
+#leagueFilter {
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    background-color: #1f1f1f;
+    color: #eee;
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: var(--block-bg);
+}
+
+.header-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-main);
+}
+.match-status-line span + span {
+    margin-left: 8px;
+}

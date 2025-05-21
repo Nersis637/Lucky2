@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Главная</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/home.css">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="top-buttons">
+  <button onclick="location.href='/forecast'">Прогноз матча</button>
+  <button onclick="location.href='/matches'">Матчи</button>
+  <button onclick="window.location.href='/search-page'">Поиск</button>
+  <button onclick="location.href='/settings'">Настройки</button>
+</div>
+
+<div class="grid-top">
+  <div class="block tall">
+    <div class="block-header">Матчи</div>
+    <div class="block-body match-list" id="matches-container">
+    </div>
+  </div>
+
+  <div class="block tall">
+    <div class="block-header">Новости</div>
+    <div class="block-body news-list" th:if="${newsList}">
+      <th:block th:each="article : ${newsList}">
+        <div class="news-entry">
+          <a th:href="${article.url}" target="_blank" style="text-decoration:none; color:inherit;">
+            <div class="news-title" th:text="${article.title}">Заголовок</div>
+          </a>
+          <div class="news-text" th:text="${article.description}">Краткое описание новости...</div>
+        </div>
+      </th:block>
+      <div th:if="${#lists.isEmpty(newsList)}" style="padding:8px; color:#aaa;">
+        Новостей пока нет.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-bottom">
+  <div class="block short">
+    <div class="block-header bombardiers-header">
+      Бомбардиры года
+      <div class="icons">
+        <img src="/icon-field.png" alt="Матчи" />
+        <img src="/icon-ball.png" alt="Голы" />
+      </div>
+    </div>
+    <div class="block-body scorers-container">
+      <div class="scorer-entry" th:each="p : ${topScorers}">
+        <div class="scorer-info">
+          <div class="scorer-text">
+            <div class="scorer-name" th:text="${p.firstName + ' ' + p.lastName}">ФИО</div>
+            <div class="scorer-role" th:text="${p.translatedPosition}">позиция</div>
+          </div>
+        </div>
+        <div class="scorer-stats">
+          <div class="scorer-matches" th:text="${p.matches}">00</div>
+          <div class="scorer-goals" th:text="${p.goals}">00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block short">
+    <div class="block-header">Лига чемпионов УЕФА 2024/2025</div>
+    <div class="block-body ucl-container">
+      <div class="ucl-entry" th:each="team, iterStat : ${championsLeague}">
+        <div class="ucl-left-inline">
+          <div class="ucl-rank-circle" th:text="${iterStat.index + 1}">1</div>
+          <div class="ucl-team-name" th:text="${team.shortName}">TEAM</div>
+        </div>
+        <div class="ucl-points" th:text="${team.championsLeaguePoints}">00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block short">
+    <div class="block-header">Обзор прессы</div>
+    <div class="block-body press-list" th:if="${pressNews}">
+      <th:block th:each="article : ${pressNews}">
+        <div class="press-entry">
+          <!-- Кликабельный заголовок -->
+          <a th:href="${article.url}" target="_blank" style="text-decoration: none; color: inherit;">
+            <div class="press-title" th:text="${article.title}">Заголовок статьи</div>
+          </a>
+          <div class="press-text" th:text="${article.description}">Описание</div>
+
+          <!-- Кликабельный источник -->
+          <div class="press-source">
+            <a th:href="${article.url}" target="_blank"
+               style="color: #aaa; font-style: italic; text-decoration: none;"
+               th:text="${article.source.name + ' — ' + @newsParser.formatPublishedAt(article.publishedAt)}">
+              Источник — Дата
+            </a>
+          </div>
+        </div>
+      </th:block>
+      <div th:if="${#lists.isEmpty(pressNews)}" style="padding:8px; color:#aaa;">
+        Нет данных для обзора прессы.
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  async function updateMatchList() {
+    try {
+      const res = await fetch('/api/matches?limit=7');
+      if (!res.ok) throw new Error(res.statusText);
+      const matches = await res.json();
+
+      const container = document.getElementById('matches-container');
+      container.innerHTML = '';
+
+      matches.forEach(match => {
+        const timeHtml = match.status === 'FINISHED'
+          ? '<span class="match-status finished">Завершён</span>'
+          : `<span class="match-time">${match.matchDate.substring(11,16)}</span>`;
+
+        const homeLogo = match.homeLogoUrl || '/static/no-logo.png';
+        const awayLogo = match.awayLogoUrl || '/static/no-logo.png';
+
+        const div = document.createElement('div');
+        div.className = 'match-entry';
+        div.innerHTML = `
+          <div class="match-status-line">${timeHtml}</div>
+          <div class="match-content">
+            <div class="team team-left">
+              <span class="team-name">${match.teamHome}</span>
+              <img class="team-logo" src="${homeLogo}" alt="Home Logo">
+            </div>
+            <div class="score">${match.homeScore} : ${match.awayScore}</div>
+            <div class="team team-right">
+              <img class="team-logo" src="${awayLogo}" alt="Away Logo">
+              <span class="team-name">${match.teamAway}</span>
+            </div>
+          </div>`;
+        container.appendChild(div);
+      });
+
+      // Добавляем пустые заглушки до 7 слотов
+      const slotsToAdd = 7 - matches.length;
+      for (let i = 0; i < slotsToAdd; i++) {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'match-entry placeholder';
+        container.appendChild(placeholder);
+      }
+
+      if (matches.length > 7) {
+        container.classList.add('scroll-enabled');
+      } else {
+        container.classList.remove('scroll-enabled');
+      }
+
+    } catch (err) {
+      console.error('Ошибка при получении матчей:', err);
+    }
+  }
+
+  updateMatchList();
+  setInterval(updateMatchList, 60_000);
+</script>
+
+</body>
+</html>

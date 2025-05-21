@@ -1,0 +1,378 @@
+:root {
+    --height-main: 650px;
+    --height-secondary: 350px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Titillium Web', sans-serif;
+    background-color: #333;
+    color: #eee;
+    font-weight: bold; /* <== добавлено: делает весь текст жирным */
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0 0 6px 2px rgba(240, 112, 90, 0.3);
+    border: 1px solid rgba(94, 44, 35, 0.1);
+}
+
+.top-buttons button {
+    background-color: #1f1f1f;
+    color: #eeeeee;
+    border: none;
+    border-radius: 20px;
+    padding: 25px 50px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold; /* <== добавлено */
+    transition: all 0.3s ease;
+}
+
+.top-buttons button:hover {
+    background-color: #444444;
+}
+
+.grid-top, .grid-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin: 0 auto 20px;
+    gap: 20px;
+}
+
+.grid-top .block {
+    height: var(--height-main);
+    flex: 1;
+}
+.grid-bottom .block {
+    height: var(--height-secondary);
+    flex: 1;
+}
+
+.block {
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), 0px 0 6px 2px rgba(240, 112, 90, 0.3);
+    border: 1px solid rgba(94, 44, 35, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.block-header {
+    font-size: 22px;
+    color: #F0705A;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.block-header::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #F0705A;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.block-body {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.match-entry {
+  padding: 12px 8px;
+  border-bottom: 1px solid #444;
+  font-family: 'Titillium Web', sans-serif;
+  box-sizing: border-box;
+}
+
+.match-status-line {
+  display: flex;
+  justify-content: flex-start;
+  color: #ff4b4b;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  padding-left: 4px;
+}
+
+.match-status-line .finished {
+  color: #aaa;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.match-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-left {
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+.team-right {
+  justify-content: flex-start;
+  flex-direction: row;
+  padding-left: 8px;
+}
+
+.team-name {
+  font-size: 1rem;
+  color: white;
+  font-weight: 600;
+}
+
+.team-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  background: white;
+  border-radius: 50%;
+}
+
+.score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  min-width: 60px;
+}
+.block-body.match-list {
+  overflow-y: visible;
+  max-height: none;
+}
+
+.block-body.match-list.scroll-enabled {
+  overflow-y: auto;
+  max-height: 100%;
+}
+/* Новости */
+.news-entry {
+    flex: 1;
+    border-bottom: 1px solid #555;
+    padding: 8px 0;
+}
+
+.news-entry:last-child {
+    border-bottom: none;
+}
+
+.news-title {
+    color: #F0705A;
+    font-weight: bold; /* УБРАН жирный */
+}
+
+.news-text {
+    color: #eee;
+    font-size: 14px; /* УМЕНЬШЕН на 4 */
+    font-weight: normal; /* убрали жирный */
+}
+
+/* Бомбардиры */
+.scorers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scorers-header .icons img {
+    height: 20px;
+    margin-left: 10px;
+}
+
+.scorers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.scorer-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #555;
+    font-size: 16px;
+}
+
+.scorer-entry:last-child {
+    border-bottom: none;
+}
+
+.scorer-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.scorer-text {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.scorer-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.scorer-role {
+    font-size: 14px;
+    color: #ccc;
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+.scorer-stats {
+    display: flex;
+    gap: 25px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+}
+
+.bombardiers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bombardiers-header .icons {
+    display: flex;
+    gap: 23px; /* расстояние между иконками такое же, как между цифрами */
+}
+
+.bombardiers-header .icons img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+.ucl-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ucl-left-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* расстояние между кружком и названием */
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ucl-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #555;
+    padding: 8px 0;
+}
+
+.ucl-entry:last-child {
+    border-bottom: none;
+}
+.ucl-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ucl-rank-circle {
+    width: 32px; /* 1.5x больше 26px */
+    height: 32px;
+    background-color: #F0705A;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 16px;
+}
+
+.ucl-team {
+    flex: 1;
+    font-weight: 600;
+}
+
+.ucl-points {
+    font-weight: bold;
+}
+/* Обзор прессы */
+.press-entry {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 0;
+    border-bottom: 1px solid #444;
+    gap: 2px;
+}
+
+.press-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.press-title {
+    color: #F0705A;
+    font-weight: normal;
+    margin: 0;
+}
+
+.press-text {
+    color: #eee;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.press-source {
+    color: #aaa;
+    font-size: 13px;
+    font-style: italic;
+    text-align: right; /* ← выравниваем по правому краю */
+    margin-top: 5px;
+}
+
+/* Если будет больше 7 матчей — задаём ограничение по высоте */
+.block-body.match-list.scroll-enabled {
+    max-height: 100%;
+}
+.match-entry.placeholder {
+  flex-grow: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+.block-body.press-list {
+  display: block;
+}

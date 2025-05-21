@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Смена пароля</title>
+  <link rel="stylesheet" href="restoring-access.css">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
+  <script>
+    // Автозаполнение email из URL
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get("email");
+      if (email) {
+        document.getElementById("emailInput").value = email;
+      }
+      const error = params.get("error");
+      if (error === "passwords") {
+        alert("Пароли не совпадают.");
+      } else if (error === "notfound") {
+        alert("Пользователь не найден.");
+      }
+    });
+  </script>
+</head>
+<body>
+<div class="login-container">
+  <h1>Новый пароль</h1>
+  <div class="form-wrapper">
+    <form action="/reset-password" method="post">
+      <!-- 👇 email заполняется из URL -->
+      <input type="email" id="emailInput" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Новый пароль" required>
+      <input type="password" name="confirmPassword" placeholder="Повторите пароль" required>
+      <div class="button-group">
+        <button type="submit" class="send-button">Сменить пароль</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

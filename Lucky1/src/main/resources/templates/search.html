@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск статистики</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/search.css">
+</head>
+<body>
+
+<!-- Верхняя панель -->
+<div class="header">
+    <button onclick="location.href='/home'">Назад</button>
+    <h1>Поиск статистики</h1>
+    <div></div>
+</div>
+
+<!-- Поисковый блок -->
+<div class="search-bar">
+    <form class="search-form" action="/search" method="get" autocomplete="off">
+        <input type="text" name="query" id="search-input" placeholder="Введите имя игрока или команды" required>
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+
+<!-- Глобальный блок для автоподсказок -->
+<div id="suggestions" class="suggestion-box"></div>
+
+<script>
+    const input = document.getElementById('search-input');
+    const suggestions = document.getElementById('suggestions');
+    let activeIndex = -1;
+
+    input.addEventListener('input', async () => {
+        activeIndex = -1;
+        const query = input.value.trim();
+        if (query.length < 2) {
+            suggestions.innerHTML = '';
+            return;
+        }
+
+        const response = await fetch(`/api/autocomplete?query=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            suggestions.innerHTML = '';
+            return;
+        }
+
+        const data = await response.json();
+        const players = data.players || [];
+        const teams = data.teams || [];
+
+        if (players.length === 0 && teams.length === 0) {
+            suggestions.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+
+        if (players.length > 0) {
+            html += `<h3 class="suggestion-title">Игроки</h3>`;
+            html += players.map(p => `<div class="suggestion-item" onclick="selectSuggestion('${p}')">${p}</div>`).join('');
+        }
+
+        if (teams.length > 0) {
+            html += `<h3 class="suggestion-title">Команды</h3>`;
+            html += teams.map(t => `<div class="suggestion-item" onclick="selectSuggestion('${t}')">${t}</div>`).join('');
+        }
+
+        suggestions.innerHTML = html;
+    });
+
+    function selectSuggestion(value) {
+        input.value = value;
+        suggestions.innerHTML = '';
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.search-bar') && !e.target.classList.contains('suggestion-item')) {
+            suggestions.innerHTML = '';
+        }
+    });
+
+    input.addEventListener('keydown', function(event) {
+        const items = document.querySelectorAll('.suggestion-item');
+        if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            if (items.length === 0) return;
+            activeIndex = (activeIndex + 1) % items.length;
+            updateActiveSuggestion(items);
+        }
+
+        if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            if (items.length === 0) return;
+            activeIndex = (activeIndex - 1 + items.length) % items.length;
+            updateActiveSuggestion(items);
+        }
+
+        if (event.key === 'Enter') {
+            const selected = items[activeIndex];
+            if (selected) {
+                event.preventDefault();
+                input.value = selected.textContent;
+                suggestions.innerHTML = '';
+                input.form.submit();
+            } else if (items.length > 0) {
+                event.preventDefault();
+                input.value = items[0].textContent;
+                suggestions.innerHTML = '';
+                input.form.submit();
+            }
+        }
+    });
+
+    function updateActiveSuggestion(items) {
+        items.forEach((item, index) => {
+            if (index === activeIndex) {
+                item.classList.add('active');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
